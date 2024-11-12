@@ -2,15 +2,21 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../use_cases/get_icons_use_case.dart';
 part 'dock_state.dart';
 
 class DockCubit extends Cubit<DockState> {
-  DockCubit(List<IconData> initialIcons)
-      : super(
-            DockState(icons: initialIcons, draggingIndex: -1, hoverIndex: -1));
+  final GetIconsUseCase getIconsUseCase;
+
+  DockCubit(this.getIconsUseCase)
+      : super(DockState(
+    icons: getIconsUseCase.execute().map((e) => e.icon).toList(),
+    draggingIndex: -1,
+    hoverIndex: -1,
+  ));
 
   void startDragging(int index) {
-    emit(state.copyWith(draggingIndex: index));
+    emit(state.copyWith(draggingIndex: index, hoverIndex: index));
   }
 
   void stopDragging() {
@@ -30,7 +36,6 @@ class DockCubit extends Cubit<DockState> {
       return;
     }
 
-    // Handle the case where the icon is dropped in the same slot
     if (fromIndex == toIndex) {
       emit(state.copyWith(draggingIndex: -1, hoverIndex: -1));
       return;
@@ -42,7 +47,6 @@ class DockCubit extends Cubit<DockState> {
 
     emit(state.copyWith(icons: icons, draggingIndex: -1, hoverIndex: -1));
   }
-
 
   double calculatePosition(int index) {
     final hoverIndex = state.hoverIndex;
@@ -59,6 +63,4 @@ class DockCubit extends Cubit<DockState> {
     }
     return index.toDouble();
   }
-
-
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/dock_cubit.dart';
+import '../../domain/cubit/dock_cubit.dart';
 
 class Dock extends StatelessWidget {
   const Dock({super.key, required this.builder});

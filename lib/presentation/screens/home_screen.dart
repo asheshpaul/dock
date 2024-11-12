@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../domain/dock_cubit.dart';
-import 'widgets/dock.dart';
+import '../../data/repositories/icon_repository.dart';
+import '../../domain/cubit/dock_cubit.dart';
+import '../../domain/use_cases/get_icons_use_case.dart';
+import '../widgets/dock.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +19,7 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: Center(
               child: BlocProvider(
-                create: (_) => DockCubit(
-                  const [
-                    Icons.person,
-                    Icons.message,
-                    Icons.call,
-                    Icons.camera,
-                    Icons.photo,
-                  ],
-                ),
+                create: (_) => DockCubit(GetIconsUseCase(IconRepository())),
                 child: Dock(
                   builder: (e) {
                     return Container(
